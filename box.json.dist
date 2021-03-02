@@ -1,0 +1,14 @@
+{
+    "alias": "phpstorm-docker-proxy.phar",
+    "output": "phpstorm-docker-proxy.phar",
+    "main": "bin/phpstorm-docker-proxy",
+    "files": [
+        "bin/phpstorm-docker-proxy",
+        "LICENSE"
+    ],
+    "directories": [
+        "src",
+        "vendor"
+    ],
+    "git-commit": "git_commit"
+}

@@ -1,0 +1,17 @@
+{
+    "name": "shira/phpstorm-docker-proxy",
+    "description": "Run PHP from PhpStorm inside an existing Docker container",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.1",
+        "ext-json": "*",
+        "ext-ctype": "*",
+        "kuria/debug": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Shira\\PhpStormDockerProxy\\": "src"
+        }
+    }
+}
