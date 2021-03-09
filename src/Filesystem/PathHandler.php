@@ -14,12 +14,31 @@ class PathHandler
         $this->config = $config;
     }
 
-    function toContainerPath(string $path): string
+    function replaceHostPaths(string $value): string
     {
-        return $this->tryGetContainerPath($path) ?? $path;
+        foreach ($this->config->paths as $hostPath => $containerPath) {
+            if (($pos = \strpos($value, $hostPath)) !== false) {
+                // replace host path with container path
+                $value = \substr_replace($value, $containerPath, $pos, \strlen($hostPath));
+
+                // replace directory separators in the subpath if they differ from host
+                if (\DIRECTORY_SEPARATOR !== $this->config->directorySeparator) {
+                    for ($i = $pos + \strlen($containerPath); isset($value[$i]); ++$i) {
+                        if ($value[$i] === \DIRECTORY_SEPARATOR) {
+                            $value[$i] = $this->config->directorySeparator;
+                        }
+                    }
+                }
+
+                // stop after first match, more complex cases aren't supported (yet)
+                break;
+            }
+        }
+
+        return $value;
     }
 
-    function tryGetContainerPath(string $path): ?string
+    function resolveHostPath(string $path): ?string
     {
         $path = $this->resolvePath($path);
 

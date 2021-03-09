@@ -3,7 +3,6 @@
 namespace Shira\PhpStormDockerProxy;
 
 use Shira\PhpStormDockerProxy\Config\ConfigLoader;
-use Shira\PhpStormDockerProxy\Context\ContextProvider;
 use Shira\PhpStormDockerProxy\Filesystem\PathHandler;
 use Shira\PhpStormDockerProxy\PhpArgs\Parser;
 use Shira\PhpStormDockerProxy\Utility as U;
@@ -20,13 +19,11 @@ class Cli
             U::setDebug($config->debug);
 
             $pathHandler = new PathHandler($config);
-            $contextProvider = new ContextProvider($pathHandler);
             $args = (new Parser())->parse(\array_slice($argv, 1));
 
             $proxy = new Proxy(
                 $config,
-                $pathHandler,
-                $contextProvider
+                $pathHandler
             );
 
             U::debug('version: @git_commit@');

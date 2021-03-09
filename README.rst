@@ -1,4 +1,4 @@
-PhpStorm docker proxy
+PhpStorm Docker proxy
 #####################
 
 Run PHP from PhpStorm inside an existing Docker container.
@@ -12,13 +12,6 @@ Requirements
 - PHP 7.1+ (installed locally)
 - Docker
 - PhpStorm
-
-
-Supported use cases
-*******************
-
-- running PHP scripts using the *Run* function
-- running PHPUnit tests
 
 
 Installation
@@ -114,32 +107,24 @@ Troubleshooting tips
 ********************
 
 - make sure the configured Docker container is running
+- make sure the version of the tool you're using (e.g. PHPUnit) is properly detected in PhpStorm settings
 - try to run a plain PHP script (using *Run - Run...*) and check the output for errors
 - add ``"debug": true`` to configuration to display additional information
-
-
-PHPUnit
-=======
-
-- make sure the PHPUnit version is properly detected in *File - Settings -
-  Languages & Frameworks - PHP - Test Frameworks*
 
 
 How does it work
 ****************
 
-This tool uses ``docker exec`` to proxy PHP calls from PhpStorm into
-a running Docker container.
+This tool uses ``docker exec`` to proxy PHP calls from PhpStorm into a running Docker container.
 
 The rough workflow is as follows:
 
 1. locate and load configuration file from working directory or above
 2. parse the provided PHP arguments
-3. extract ``IDE_*`` environment variables and try to resolve paths in them
-4. use the ``IDE_*`` environment variables to guess what PhpStorm is trying to execute
-5. process the PHP arguments so they're valid inside the container
-6. locate a running container using the image name from configuration
-7. run ``docker exec`` with appropriate options and arguments
+3. extract ``IDE_*`` environment variables and replace paths in them
+4. process the PHP arguments so they're valid inside the container
+5. locate a running container using the image name from configuration
+6. run ``docker exec`` with appropriate options and arguments
 
 
 Building the phar

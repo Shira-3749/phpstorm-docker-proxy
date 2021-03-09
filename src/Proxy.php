@@ -3,8 +3,6 @@
 namespace Shira\PhpStormDockerProxy;
 
 use Shira\PhpStormDockerProxy\Config\Config;
-use Shira\PhpStormDockerProxy\Context\ContextInterface;
-use Shira\PhpStormDockerProxy\Context\ContextProvider;
 use Shira\PhpStormDockerProxy\Filesystem\PathHandler;
 use Shira\PhpStormDockerProxy\PhpArgs\Part;
 use Shira\PhpStormDockerProxy\Utility as U;
@@ -17,14 +15,10 @@ class Proxy
     /** @var PathHandler */
     private $pathHandler;
 
-    /** @var ContextProvider */
-    private $contextProvider;
-
-    function __construct(Config $config, PathHandler $pathHandler, ContextProvider $contextProvider)
+    function __construct(Config $config, PathHandler $pathHandler)
     {
         $this->config = $config;
         $this->pathHandler = $pathHandler;
-        $this->contextProvider = $contextProvider;
     }
 
     /**
@@ -33,8 +27,7 @@ class Proxy
     function run(array $args): int
     {
         $env = $this->getEnv();
-        $context = $this->contextProvider->getContext($env);
-        [$args, $inputFile] = $this->processArgs($args, $context);
+        [$args, $inputFile] = $this->processArgs($args);
         $containerId = $this->getContainerId();
 
         U::debug('processed args: %s', $args);
@@ -59,7 +52,7 @@ class Proxy
             $execArgs[] = \sprintf('%s=%s', $name, $value);
         }
 
-        if (($containerWorkingDir = $this->pathHandler->tryGetContainerPath(\getcwd())) !== null) {
+        if (($containerWorkingDir = $this->pathHandler->resolveHostPath(\getcwd())) !== null) {
             $execArgs[] = '-w';
             $execArgs[] = $containerWorkingDir;
         }
@@ -116,8 +109,8 @@ class Proxy
         // fetch special IDE_* env vars
         foreach (\getenv() as $name => $value) {
             if (\strncmp($name, 'IDE_', 4) === 0) {
-                // try to resolve path in env value
-                $env[$name] = $this->pathHandler->toContainerPath($value);
+                // try to replace paths in env value
+                $env[$name] = $this->pathHandler->replaceHostPaths($value);
             }
         }
 
@@ -128,11 +121,10 @@ class Proxy
      * @param Part\PartInterface[] $args
      * @return array{Part\PartInterface[], string|null}
      */
-    private function processArgs(array $args, ContextInterface $context): array
+    private function processArgs(array $args): array
     {
         $outIndex = 0;
         $outArgs = [];
-        $scriptArgs = [];
         $inputFile = null;
         $argSeparatorOffset = null;
         $scriptArgsOffset = null;
@@ -152,19 +144,16 @@ class Proxy
                     break;
 
                 case $part instanceof Part\ScriptArgument:
-                    // remember offset of first script arg
                     if ($scriptArgsOffset === null) {
-                        $scriptArgsOffset = $outIndex;
+                        $scriptArgsOffset = $outIndex; // remember offset of first script arg
                     }
 
-                    // gather script args for context processing
-                    $scriptArgs[] = ($part = clone $part);
+                    $part = $this->processScriptArg($part);
                     break;
 
                 case $part instanceof Part\Argument:
-                    // remember offset of arg separator
                     if ($argSeparatorOffset === null && $part->value === '--') {
-                        $argSeparatorOffset = $outIndex;
+                        $argSeparatorOffset = $outIndex; // remember offset of arg separator
                     }
                     break;
 
@@ -182,8 +171,6 @@ class Proxy
             \array_splice($outArgs, $scriptArgsOffset, 0, [new Part\Argument('--')]);
         }
 
-        $context->processScriptArgs($scriptArgs);
-
         return [$outArgs, $inputFile];
     }
 
@@ -194,7 +181,7 @@ class Proxy
         if ($option->value !== null) {
             if ($option->name === 'f') {
                 // handle -f
-                if (($containerPath = $this->pathHandler->tryGetContainerPath($option->value)) !== null) {
+                if (($containerPath = $this->pathHandler->resolveHostPath($option->value)) !== null) {
                     // use container path
                     $out->value = $containerPath;
                 } elseif (\is_file($option->value)) {
@@ -204,7 +191,7 @@ class Proxy
                 }
             } elseif ($option->isPath) {
                 // handle path value
-                $out->value = $this->pathHandler->toContainerPath($option->value);
+                $out->value = $this->pathHandler->replaceHostPaths($option->value);
             }
         }
 
@@ -215,7 +202,7 @@ class Proxy
     {
         $out = clone $arg;
 
-        if (($containerPath = $this->pathHandler->tryGetContainerPath($arg->value)) !== null) {
+        if (($containerPath = $this->pathHandler->resolveHostPath($arg->value)) !== null) {
             // use container path
             $out->value = $containerPath;
         } elseif ($arg->pipeable && \is_file($arg->value)) {
@@ -223,6 +210,14 @@ class Proxy
             $inputFile = $arg->value;
             $out = null;
         }
+
+        return $out;
+    }
+
+    private function processScriptArg(Part\ScriptArgument $arg): Part\ScriptArgument
+    {
+        $out = clone $arg;
+        $out->value = $this->pathHandler->replaceHostPaths($out->value);
 
         return $out;
     }
