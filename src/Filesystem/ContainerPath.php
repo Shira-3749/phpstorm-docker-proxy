@@ -4,21 +4,11 @@ namespace Shira\PhpStormDockerProxy\Filesystem;
 
 class ContainerPath implements PathInterface
 {
-    /** @var string */
-    private $path;
-
-    /** @var string */
-    private $containerPath;
-
-    /** @var string */
-    private $hostPath;
-
-    function __construct(string $path, string $containerPath, string $hostPath)
-    {
-        $this->path = $path;
-        $this->containerPath = $containerPath;
-        $this->hostPath = $hostPath;
-    }
+    function __construct(
+        private string $path,
+        private string $containerPath,
+        private string $hostPath
+    ) {}
 
     function __toString(): string
     {

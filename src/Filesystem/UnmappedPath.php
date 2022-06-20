@@ -4,12 +4,8 @@ namespace Shira\PhpStormDockerProxy\Filesystem;
 
 class UnmappedPath implements PathInterface
 {
-    /** @var string */
-    private $path;
-
-    function __construct(string $path)
+    function __construct(private string $path)
     {
-        $this->path = $path;
     }
 
     function __toString(): string

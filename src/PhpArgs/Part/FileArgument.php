@@ -4,13 +4,8 @@ namespace Shira\PhpStormDockerProxy\PhpArgs\Part;
 
 class FileArgument extends Argument
 {
-    /** @var bool */
-    public $pipeable;
-
-    function __construct(string $value, bool $pipeable)
+    function __construct(string $value, public bool $pipeable)
     {
         parent::__construct($value);
-
-        $this->pipeable = $pipeable;
     }
 }

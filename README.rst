@@ -9,7 +9,7 @@ Run PHP from PhpStorm inside an existing Docker container.
 Requirements
 ************
 
-- PHP 7.1+ (installed locally)
+- PHP 8.1+ (installed locally)
 - Docker
 - PhpStorm
 

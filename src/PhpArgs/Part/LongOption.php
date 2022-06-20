@@ -4,16 +4,8 @@ namespace Shira\PhpStormDockerProxy\PhpArgs\Part;
 
 class LongOption implements PartInterface
 {
-    /** @var string */
-    public $name;
-
-    /** @var string|null */
-    public $value;
-
-    function __construct(string $name, ?string $value)
+    function __construct(public string $name, public ?string $value)
     {
-        $this->name = $name;
-        $this->value = $value;
     }
 
     function __toString(): string

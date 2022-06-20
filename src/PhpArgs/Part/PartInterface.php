@@ -2,7 +2,6 @@
 
 namespace Shira\PhpStormDockerProxy\PhpArgs\Part;
 
-interface PartInterface
+interface PartInterface extends \Stringable
 {
-    function __toString(): string;
 }

@@ -6,12 +6,8 @@ use Shira\PhpStormDockerProxy\Config\Config;
 
 class PathHandler
 {
-    /** @var Config */
-    private $config;
-
-    function __construct(Config $config)
+    function __construct(private Config $config)
     {
-        $this->config = $config;
     }
 
     function replaceHostPaths(string $value): string
@@ -42,16 +38,11 @@ class PathHandler
     {
         $path = $this->resolvePath($path);
 
-        switch (true) {
-            case $path instanceof HostPath:
-                return $path->translate();
-
-            case $path instanceof ContainerPath:
-                return (string) $path;
-
-            default:
-                return null;
-        }
+        return match (true) {
+            $path instanceof HostPath => $path->translate(),
+            $path instanceof ContainerPath => (string)$path,
+            default => null,
+        };
     }
 
     private function resolvePath(string $path): PathInterface

@@ -6,8 +6,7 @@ use Kuria\Debug\Dumper;
 
 abstract class Utility
 {
-    /** @var bool */
-    private static $debug = false;
+    private static bool $debug = false;
 
     /**
      * Toggle debug messages
@@ -46,7 +45,7 @@ abstract class Utility
     }
 
     /**
-     * Throw an failure exception
+     * Throw a failure exception
      *
      * @throws FailureException
      * @return no-return

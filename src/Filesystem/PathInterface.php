@@ -2,9 +2,7 @@
 
 namespace Shira\PhpStormDockerProxy\Filesystem;
 
-interface PathInterface
+interface PathInterface extends \Stringable
 {
-    function __toString(): string;
-
     function translate(): string;
 }

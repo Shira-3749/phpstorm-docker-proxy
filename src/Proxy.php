@@ -9,16 +9,8 @@ use Shira\PhpStormDockerProxy\Utility as U;
 
 class Proxy
 {
-    /** @var Config */
-    private $config;
-
-    /** @var PathHandler */
-    private $pathHandler;
-
-    function __construct(Config $config, PathHandler $pathHandler)
+    function __construct(private Config $config, private PathHandler $pathHandler)
     {
-        $this->config = $config;
-        $this->pathHandler = $pathHandler;
     }
 
     /**
