@@ -9,8 +9,12 @@ use Shira\PhpStormDockerProxy\Utility as U;
 
 class Proxy
 {
-    function __construct(private Config $config, private PathHandler $pathHandler)
+
+    private CommandToProxy $commandToProxy;
+
+    function __construct(CommandToProxy $commandToProxy, private Config $config, private PathHandler $pathHandler)
     {
+        $this->commandToProxy = $commandToProxy;
     }
 
     /**
@@ -50,7 +54,7 @@ class Proxy
         }
 
         $execArgs[] = $containerId;
-        $execArgs[] = $this->config->phpBin;
+        $execArgs[] = $this->commandToProxy->getPath($this->config);
 
         if ($args) {
             foreach ($args as $arg) {

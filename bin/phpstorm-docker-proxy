@@ -1,8 +1,0 @@
-#!/usr/bin/env php
-<?php declare(strict_types=1);
-
-namespace Shira\PhpStormDockerProxy;
-
-require __DIR__ . '/../vendor/autoload.php';
-
-exit((new Cli())->run($argv));

@@ -59,7 +59,7 @@ See more options in `List of configuration directives`_.
 3. Configure PhpStorm to use the proxy
 ======================================
 
-1. make sure the container specified in the configuration is up and running
+1. make sure the container running the specified image in the configuration is up and running
 2. head to *File - Settings - Languages & Frameworks - PHP*
 3. click the "*...*" on the right side of *CLI Interpreter*
 4. click the "*+*" to add a new interpreter as *Other Local...*
@@ -98,9 +98,34 @@ paths              ``{}``       Host to container path mapping.
                                 - trailing slashes should be omitted
 phpBin             ``"php"``    PHP binary name or path inside the container.
 dockerBin          ``"docker"`` Docker binary name or path on host.
+vendorBin                       Directory whenre composer vendor binaries are installed.
 directorySeparator ``"/"``      Directory separator inside the container.
 debug              ``false``    Toggle debugging output.
 ================== ============ =============================================
+
+Support of other binaries than php
+**********************************
+
+Simply duplicate bin/phpstorm-docker-proxy-php and replace php with the name of the proxified executable,
+then create an entry in the config file with the path of the proxified binary in the container.
+
+Example for phpcs:
+
+- copy bin/phpstorm-docker-proxy-php
+- name it bin/phpstorm-docker-proxy-phpcs
+- add `"phpcsBin": "/path/to/phpcs"` in the config file
+
+Binaries already shipped:
+- codecept
+- composer
+- php
+- php-cs-fixer
+- phpcbf
+- phpcs
+- phpmd
+- phpunit
+
+********************
 
 
 Troubleshooting tips

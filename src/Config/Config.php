@@ -8,12 +8,10 @@ class Config
      * @param array<string, string> $paths
      */
     function __construct(
-        public string $baseDir,
-        public string $image,
-        public array $paths,
-        public string $phpBin,
-        public string $dockerBin,
-        public string $directorySeparator,
-        public bool $debug
-    ) {}
+        public array $configArray
+    ) {
+        foreach ($configArray as $property => $value) {
+            $this->{$property} = $value;
+        }
+    }
 }

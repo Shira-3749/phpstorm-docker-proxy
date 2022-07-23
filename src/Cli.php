@@ -9,6 +9,13 @@ use Shira\PhpStormDockerProxy\Utility as U;
 
 class Cli
 {
+
+    public CommandToProxy $commandToProxy;
+
+    public function __construct(CommandToProxy $commandToProxy) {
+        $this->commandToProxy = $commandToProxy;
+    }
+
     /**
      * @param string[] $argv
      */
@@ -22,11 +29,13 @@ class Cli
             $args = (new Parser())->parse(\array_slice($argv, 1));
 
             $proxy = new Proxy(
+                $this->commandToProxy,
                 $config,
                 $pathHandler
             );
 
             U::debug('version: @git_commit@');
+            U::debug('command to proxy: %s', $this->commandToProxy);
             U::debug('config: %s', $config);
             U::debug('raw env: %s', \getenv());
             U::debug('raw args: %s', $argv);
