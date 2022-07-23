@@ -125,6 +125,10 @@ Binaries already shipped:
 - phpmd
 - phpunit
 
+Note that phpstorm does a copy of files in a subfolder of /private. Be sure to add:
+- a docker mount: -/private:/private
+- a path mapping in config file /private -> /private
+
 ********************
 
 
