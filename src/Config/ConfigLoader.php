@@ -38,7 +38,7 @@ class ConfigLoader
 
         return new Config(
             $baseDir,
-            $data['image'] ?: '',
+            $data['image'],
             $data['container'] ?: '',
             $this->resolvePaths($baseDir, $data['paths']),
             $data['phpBin'],
