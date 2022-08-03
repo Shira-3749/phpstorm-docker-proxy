@@ -20,7 +20,7 @@ class Proxy
     {
         $env = $this->getEnv();
         [$args, $inputFile] = $this->processArgs($args);
-        $containerId = ($this->config->container !== null) ? $this->config->container : $this->getContainerId();
+        $containerId = $this->config->container ?? $this->getContainerId();
 
         U::debug('processed args: %s', $args);
 
