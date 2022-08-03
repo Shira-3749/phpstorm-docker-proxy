@@ -33,7 +33,7 @@ class ConfigLoader
 
         $data = \array_replace_recursive(self::DEFAULTS, $data);
 
-        $data['image'] !== null or $data['container'] !== null
+        $data['image'] !== null || $data['container'] !== null
             or U::fail('Image or container name is not specified');
 
         return new Config(
