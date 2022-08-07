@@ -39,7 +39,7 @@ class ConfigLoader
         return new Config(
             $baseDir,
             $data['image'],
-            $data['container'] ?: '',
+            $data['container'],
             $this->resolvePaths($baseDir, $data['paths']),
             $data['phpBin'],
             $data['dockerBin'],
