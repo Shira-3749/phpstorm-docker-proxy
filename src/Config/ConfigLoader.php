@@ -10,6 +10,7 @@ class ConfigLoader
 
     private const DEFAULTS = [
         'image' => null,
+        'container' => null,
         'paths' => [],
         'phpBin' => 'php',
         'dockerBin' => 'docker',
@@ -32,12 +33,13 @@ class ConfigLoader
 
         $data = \array_replace_recursive(self::DEFAULTS, $data);
 
-        $data['image'] !== null
-            or U::fail('Image name is not specified');
+        $data['image'] !== null || $data['container'] !== null
+            or U::fail('Image or container name is not specified');
 
         return new Config(
             $baseDir,
             $data['image'],
+            $data['container'],
             $this->resolvePaths($baseDir, $data['paths']),
             $data['phpBin'],
             $data['dockerBin'],

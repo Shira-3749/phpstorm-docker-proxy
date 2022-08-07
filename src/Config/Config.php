@@ -9,7 +9,8 @@ class Config
      */
     function __construct(
         public string $baseDir,
-        public string $image,
+        public ?string $image,
+        public ?string $container,
         public array $paths,
         public string $phpBin,
         public string $dockerBin,
