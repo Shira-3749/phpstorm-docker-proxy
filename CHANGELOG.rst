@@ -1,6 +1,11 @@
 Changelog
 #########
 
+0.4.0
+*****
+
+- support locating container by name (@mickaelperrin)
+
 
 0.3.0
 *****
