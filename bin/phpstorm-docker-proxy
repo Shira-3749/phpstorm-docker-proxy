@@ -3,6 +3,6 @@
 
 namespace Shira\PhpStormDockerProxy;
 
-require __DIR__ . '/../vendor/autoload.php';
+require $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
 
 exit((new Cli())->run($argv));

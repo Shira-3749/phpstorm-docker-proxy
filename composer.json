@@ -13,5 +13,8 @@
         "psr-4": {
             "Shira\\PhpStormDockerProxy\\": "src"
         }
-    }
+    },
+    "bin": [
+        "bin/phpstorm-docker-proxy"
+    ]
 }
