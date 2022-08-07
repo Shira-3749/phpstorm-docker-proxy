@@ -49,7 +49,8 @@ root (or any parent directory) with the following contents:
    }
 
 - change ``php_image_name_here`` to the name of your project's PHP Docker image
-  (i.e. an image that contains a ``php`` binary executable from CLI)
+  (i.e. an image that contains a ``php`` binary executable from CLI). If you prefer
+  you can use the container settings to use a specific container instead.
 - update ``paths`` to map local paths into the container
   (according to your docker volumes)
 
@@ -91,6 +92,7 @@ The following directives are supported in ``.phpstorm-docker-proxy.json``:
 Option             Default      Description
 ================== ============ =============================================
 image              \-           PHP Docker image name
+container          \-           PHP Docker container name
 paths              ``{}``       Host to container path mapping.
 
                                 - host paths are relative to the config file
