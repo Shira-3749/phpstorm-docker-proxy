@@ -20,7 +20,7 @@ Installation
 1. Get the phar
 ===============
 
-Download the latest phar from `releases <https://github.com/ShiraNai7/phpstorm-docker-proxy/releases>`_.
+Download the latest phar from `releases <https://github.com/Shira-3749/phpstorm-docker-proxy/releases>`_.
 
 You can also build your own. See `Building the phar`_.
 
